@@ -21,16 +21,16 @@ public class UserController {
         return userService.findAll();
     }
     @GetMapping(value = "/id")
-    public Optional<User> findById(@PathVariable Integer id) {
+    public Optional<User> findById(@RequestParam Integer id) {
         return userService.findById(id);
     }
     @GetMapping(value = "/lim")
-    public Page<User> findAllByLimit(@PathVariable Integer start,@PathVariable Integer limit,@RequestParam String field) {
+    public Page<User> findAllByLimit(@RequestParam Integer start,@RequestParam Integer limit,@RequestParam String field) {
         PageRequest page = PageRequest.of(start, limit, Sort.by(Sort.Direction.ASC, field));
         return userService.findAllByLimit(start,limit,field);
     }
     @GetMapping(value = "/cityacage" )
-    public List<User> findByCityAndActiveAndAge(@RequestParam String city,@PathVariable Integer active,@PathVariable Integer age) {
+    public List<User> findByCityAndActiveAndAge(@RequestParam String city,@RequestParam Integer active,@RequestParam Integer age) {
         return userService.findByCityAndActiveAndAge(city, active, age);
     }
     @GetMapping(value = "/age" )
