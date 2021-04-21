@@ -21,7 +21,7 @@ public class UserController {
         return userService.findAll();
     }
     @GetMapping(value = "/id")
-    public Optional<User> findById(@RequestParam Integer id) {
+    public Optional<User> findById(@PathVariable Integer id) {
         return userService.findById(id);
     }
     @GetMapping(value = "/lim")
