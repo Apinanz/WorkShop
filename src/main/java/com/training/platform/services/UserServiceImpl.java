@@ -7,7 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -61,5 +64,34 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllByJpqlParamsQuery(Integer active, String city) {
         return userRepository.findAllByJpqlParamsQuery(active, city);
     }
-}
 
+    //Homework1----------------------------------
+    @Override
+    public List<User> findByIdIn(List<Integer> id) {
+        return userRepository.findByIdIn(id);
+    }
+    @Override
+    public List<User> findByCityAndAge(String city ,Integer age) {
+        return userRepository.findByCityAndAge(city,age);
+    }
+
+
+
+    @Override
+    public Page<User> findAll(PageRequest pageRequest) {
+        return userRepository.findAll(pageRequest);
+    }
+
+
+
+    @Override
+    public Map<String, String> getCities() {
+        Map<String, String> cities =  new HashMap<String, String>();
+        cities.put("bangkok","bangkok");
+        cities.put("nakornpathom","nakornpathom");
+        return cities;
+    }
+
+
+
+}
