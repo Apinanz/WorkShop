@@ -8,15 +8,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UtilsService utilsService;
 
     @Override
     public List<User> findAll() {
@@ -65,18 +64,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllByJpqlParamsQuery(active, city);
     }
 
-    //Homework1----------------------------------
-    @Override
-    public List<User> findByIdIn(List<Integer> id) {
-        return userRepository.findByIdIn(id);
-    }
-    @Override
-    public List<User> findByCityAndAge(String city ,Integer age) {
-        return userRepository.findByCityAndAge(city,age);
-    }
-
-
-
     @Override
     public Page<User> findAll(PageRequest pageRequest) {
         return userRepository.findAll(pageRequest);
@@ -91,6 +78,61 @@ public class UserServiceImpl implements UserService {
         cities.put("nakornpathom","nakornpathom");
         return cities;
     }
+
+
+    @Override
+    public User save(Map<String,String> inputs) throws Exception {
+        try {
+            User user = new User();
+            user.setName(inputs.get("name"));
+            user.setSurname(inputs.get("surname"));
+            user.setEmail(inputs.get("email"));
+            user.setPassword(utilsService.encrytePassword(inputs.get("password")));
+            user.setConfirm_password(utilsService.encrytePassword(inputs.get("confirm_password")));
+            user.setAge(Integer.parseInt(inputs.get("age")));
+            user.setAddress(inputs.get("address"));
+            user.setCity(inputs.get("city"));
+            user.setMobile(inputs.get("mobile"));
+            user.setActive(1);
+            user.setCreatedAt(new Date());
+
+            return userRepository.save(user);
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+    }
+
+    @Override
+    public boolean isEmailAlreadyInUse(String email) {
+        boolean emailInuse = true;
+        if (userRepository.findByEmail(email) == null) {
+            emailInuse = false;
+        }
+        return emailInuse;
+    }
+
+    @Override
+    public User update(Optional<User> user, Map<String,String> inputs) throws Exception {
+        try {
+            user.get().setName(inputs.get("name"));
+            user.get().setSurname(inputs.get("surname"));
+            user.get().setAge(Integer.parseInt(inputs.get("age")));
+            user.get().setAddress(inputs.get("address"));
+            user.get().setCity(inputs.get("city"));
+            user.get().setMobile(inputs.get("mobile"));
+            user.get().setUpdatedAt(new Date());
+            return userRepository.save(user.get());
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    @Override
+    public void deleteById(Integer id) throws Exception {
+        userRepository.deleteById(id);
+    }
+
 
 
 

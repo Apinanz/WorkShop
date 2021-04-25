@@ -29,7 +29,9 @@ public interface UserService {
 
     List<User> findAllByJpqlParamsQuery(Integer active, String city);
 
-    //Homework1----------------------------------
-     List<User> findByIdIn(List<Integer> id);
-     List<User> findByCityAndAge(String city ,Integer age);
+    User save(Map<String,String> inputs) throws Exception;
+    boolean isEmailAlreadyInUse(String email);
+    User update(Optional<User> user, Map<String,String> inputs) throws Exception;
+    void deleteById(Integer id) throws Exception;
+
 }

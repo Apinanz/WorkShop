@@ -25,8 +25,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query("SELECT u FROM User u WHERE u.active = ?1 and u.city = ?2 ")
     public List<User> findAllByJpqlParamsQuery(Integer active, String city);
 
-    //Homework1----------------------------------
-    public List<User> findByIdIn(List<Integer> id);
-    public List<User> findByCityAndAge(String city ,Integer age);
+    User findByEmail(String email);
 
 }
